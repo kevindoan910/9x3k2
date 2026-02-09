@@ -2,138 +2,352 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Valentine's Day ❤️</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Catch the Hearts ❤️</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            touch-action: none;
+            user-select: none;
+            -webkit-user-select: none;
+            overscroll-behavior: none;
+            -webkit-overflow-scrolling: touch;
         }
 
         body {
             font-family: 'Arial', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            overflow: hidden;
-        }
-
-        .container {
-            text-align: center;
+            background: linear-gradient(180deg, #1a0a2e 0%, #2d1b4e 50%, #4a1942 100%);
             position: relative;
-            z-index: 1;
         }
 
-        .heart {
-            width: 300px;
-            height: 300px;
+        #game-container {
+            width: 100%;
+            height: 100%;
             position: relative;
-            margin: 0 auto 30px;
-            animation: heartbeat 1.5s ease-in-out infinite;
+            max-width: 100vw;
+            max-height: 100dvh;
         }
 
-        .heart::before,
-        .heart::after {
-            content: '';
-            width: 150px;
-            height: 240px;
+        #score-board {
             position: absolute;
-            left: 150px;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: min(3vw, 16px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        #score-board span {
+            color: #fff;
+            font-size: clamp(18px, 5vw, 28px);
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .falling-heart {
+            position: absolute;
+            width: clamp(28px, 8vw, 48px);
+            height: clamp(28px, 8vw, 48px);
+            pointer-events: none;
+            will-change: transform;
+        }
+
+        .falling-heart::before,
+        .falling-heart::after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 80%;
             top: 0;
             background: #ff1744;
-            border-radius: 150px 150px 0 0;
-            transform: rotate(-45deg);
-            transform-origin: 0 100%;
-            box-shadow: 0 0 40px rgba(255, 23, 68, 0.5);
+            border-radius: 50% 50% 0 0;
+            box-shadow: 0 0 12px rgba(255, 23, 68, 0.6);
         }
 
-        .heart::after {
+        .falling-heart::before {
+            left: 50%;
+            transform: rotate(-45deg);
+            transform-origin: 0 100%;
+        }
+
+        .falling-heart::after {
             left: 0;
             transform: rotate(45deg);
             transform-origin: 100% 100%;
         }
 
-        @keyframes heartbeat {
-            0%, 100% {
-                transform: scale(1);
-            }
-            10%, 30% {
-                transform: scale(1.1);
-            }
-            20%, 40% {
-                transform: scale(1);
-            }
-        }
-
-        h1 {
-            color: white;
-            font-size: 3em;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            animation: fadeIn 2s ease-in;
-        }
-
-        p {
-            color: white;
-            font-size: 1.5em;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-            animation: fadeIn 2s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .sparkle {
+        #basket {
             position: absolute;
-            width: 10px;
-            height: 10px;
-            background: white;
-            border-radius: 50%;
-            animation: sparkle 2s infinite;
+            bottom: clamp(8px, 3vh, 24px);
+            width: clamp(80px, 28vw, 140px);
+            height: clamp(36px, 10vw, 56px);
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5;
+            transition: none;
+            pointer-events: none;
         }
 
-        @keyframes sparkle {
-            0%, 100% {
-                opacity: 0;
-                transform: scale(0);
-            }
-            50% {
-                opacity: 1;
-                transform: scale(1);
-            }
+        #basket .basket-body {
+            position: absolute;
+            bottom: 0;
+            left: 5%;
+            right: 5%;
+            height: 70%;
+            background: linear-gradient(180deg, #8B4513 0%, #654321 100%);
+            border-radius: 0 0 8px 8px;
+            border: 3px solid #5D3A1A;
+            box-shadow: inset 0 -4px 8px rgba(0,0,0,0.3);
         }
 
-        .sparkle:nth-child(1) { top: 10%; left: 20%; animation-delay: 0s; }
-        .sparkle:nth-child(2) { top: 20%; right: 15%; animation-delay: 0.5s; }
-        .sparkle:nth-child(3) { bottom: 30%; left: 10%; animation-delay: 1s; }
-        .sparkle:nth-child(4) { bottom: 20%; right: 20%; animation-delay: 1.5s; }
-        .sparkle:nth-child(5) { top: 50%; left: 5%; animation-delay: 0.3s; }
-        .sparkle:nth-child(6) { top: 60%; right: 5%; animation-delay: 0.8s; }
+        #basket .basket-handle {
+            position: absolute;
+            top: -8px;
+            left: -5%;
+            right: -5%;
+            height: 50%;
+            border: 4px solid #5D3A1A;
+            border-bottom: none;
+            border-radius: 50% 50% 0 0;
+            background: transparent;
+        }
+
+        #start-screen {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(180deg, #1a0a2e 0%, #2d1b4e 50%, #4a1942 100%);
+            z-index: 20;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #start-screen h1 {
+            color: #fff;
+            font-size: clamp(24px, 7vw, 42px);
+            margin-bottom: 12px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        }
+
+        #start-screen p {
+            color: rgba(255,255,255,0.9);
+            font-size: clamp(14px, 4vw, 18px);
+            margin-bottom: 24px;
+            max-width: 320px;
+        }
+
+        #start-btn {
+            padding: 14px 32px;
+            font-size: clamp(16px, 4vw, 20px);
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(180deg, #ff1744 0%, #c51162 100%);
+            border: none;
+            border-radius: 999px;
+            box-shadow: 0 4px 16px rgba(255, 23, 68, 0.5);
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+
+        #start-btn:hover, #start-btn:active {
+            background: linear-gradient(180deg, #ff4569 0%, #e91e63 100%);
+            transform: scale(1.05);
+        }
+
+        .hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-    
-    <div class="container">
-        <div class="heart"></div>
-        <h1>Happy Valentine's Day!</h1>
-        <p>❤️ With Love ❤️</p>
+    <div id="start-screen">
+        <h1>❤️ Catch the Hearts ❤️</h1>
+        <p>Move the basket to catch falling hearts. Tap and drag on mobile, or use your mouse on desktop!</p>
+        <button id="start-btn" type="button">Start Game</button>
     </div>
+
+    <div id="game-container" class="hidden">
+        <div id="score-board">
+            <span>Hearts: <span id="score">0</span></span>
+        </div>
+
+        <div id="basket">
+            <div class="basket-handle"></div>
+            <div class="basket-body"></div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            const container = document.getElementById('game-container');
+            const startScreen = document.getElementById('start-screen');
+            const startBtn = document.getElementById('start-btn');
+            const basket = document.getElementById('basket');
+            const scoreEl = document.getElementById('score');
+
+            let gameActive = false;
+            let score = 0;
+            let basketX = 0.5;
+            let hearts = [];
+            let spawnInterval = null;
+            let animationId = null;
+            let lastTime = 0;
+
+            const HEART_SIZE = Math.min(48, Math.max(28, window.innerWidth * 0.08));
+            const BASKET_WIDTH = Math.min(140, Math.max(80, window.innerWidth * 0.28));
+            const FALL_SPEED = 0.15;
+            const SPAWN_RATE_MS = 900;
+
+            function getContainerRect() {
+                return container.getBoundingClientRect();
+            }
+
+            function startGame() {
+                startScreen.classList.add('hidden');
+                container.classList.remove('hidden');
+                gameActive = true;
+                score = 0;
+                scoreEl.textContent = '0';
+                hearts.forEach(h => h.el.remove());
+                hearts = [];
+
+                const rect = getContainerRect();
+                basketX = 0.5;
+                updateBasketPosition();
+
+                spawnInterval = setInterval(spawnHeart, SPAWN_RATE_MS);
+                lastTime = performance.now();
+                gameLoop(lastTime);
+            }
+
+            function spawnHeart() {
+                if (!gameActive) return;
+                const rect = getContainerRect();
+                const el = document.createElement('div');
+                el.className = 'falling-heart';
+                container.appendChild(el);
+                const size = HEART_SIZE;
+                const padding = size;
+                const x = padding + Math.random() * (rect.width - padding * 2);
+                el.style.left = (x - size / 2) + 'px';
+                el.style.top = (-size) + 'px';
+                el.style.width = size + 'px';
+                el.style.height = size + 'px';
+                hearts.push({
+                    el,
+                    x: x / rect.width,
+                    y: -size / rect.height,
+                    size,
+                    speed: FALL_SPEED * (0.8 + Math.random() * 0.4)
+                });
+            }
+
+            function updateBasketPosition() {
+                const rect = getContainerRect();
+                const centerX = Math.max(BASKET_WIDTH / 2, Math.min(rect.width - BASKET_WIDTH / 2, basketX * rect.width));
+                basket.style.left = centerX + 'px';
+                basket.style.transform = 'translateX(-50%)';
+            }
+
+            function setBasketFromClientX(clientX) {
+                const rect = getContainerRect();
+                basketX = (clientX - rect.left) / rect.width;
+                updateBasketPosition();
+            }
+
+            function gameLoop(now) {
+                if (!gameActive) return;
+                const rect = getContainerRect();
+                const dt = Math.min((now - lastTime) / 1000, 0.1);
+                lastTime = now;
+
+                const br = basket.getBoundingClientRect();
+                const basketLeft = br.left - rect.left;
+                const basketRight = br.right - rect.left;
+                const basketTop = br.top - rect.top;
+                const basketBottom = br.bottom - rect.top;
+                const catchMargin = HEART_SIZE * 0.5;
+
+                for (let i = hearts.length - 1; i >= 0; i--) {
+                    const h = hearts[i];
+                    h.y += h.speed * dt;
+                    const px = h.x * rect.width;
+                    const py = h.y * rect.height + h.size / 2;
+                    const heartLeft = px - h.size / 2;
+                    const heartRight = px + h.size / 2;
+                    const heartBottom = py + h.size / 2;
+
+                    h.el.style.top = (py - h.size / 2) + 'px';
+                    h.el.style.left = (px - h.size / 2) + 'px';
+
+                    if (heartBottom >= basketTop - catchMargin && heartBottom <= basketBottom + catchMargin) {
+                        if (heartRight >= basketLeft - catchMargin && heartLeft <= basketRight + catchMargin) {
+                            score++;
+                            scoreEl.textContent = score;
+                            h.el.remove();
+                            hearts.splice(i, 1);
+                            continue;
+                        }
+                    }
+
+                    if (h.y > 1.2) {
+                        h.el.remove();
+                        hearts.splice(i, 1);
+                    }
+                }
+
+                animationId = requestAnimationFrame(gameLoop);
+            }
+
+            function onPointer(e) {
+                if (!gameActive) return;
+                const x = e.touches ? e.touches[0].clientX : e.clientX;
+                setBasketFromClientX(x);
+            }
+
+            function onPointerMove(e) {
+                if (!gameActive) return;
+                e.preventDefault();
+                const x = e.touches ? e.touches[0].clientX : e.clientX;
+                setBasketFromClientX(x);
+            }
+
+            startBtn.addEventListener('click', function () {
+                startGame();
+            });
+
+            container.addEventListener('touchmove', onPointerMove, { passive: false });
+            container.addEventListener('touchstart', onPointer, { passive: true });
+            container.addEventListener('mousemove', function (e) {
+                if (gameActive && e.buttons === 0) return;
+                onPointerMove(e);
+            });
+            container.addEventListener('mousedown', function (e) {
+                if (gameActive) setBasketFromClientX(e.clientX);
+            });
+
+            window.addEventListener('resize', function () {
+                if (gameActive) updateBasketPosition();
+            });
+        })();
+    </script>
 </body>
 </html>
