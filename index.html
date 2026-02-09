@@ -220,6 +220,23 @@
                 return container.getBoundingClientRect();
             }
 
+            function endGame() {
+                gameActive = false;
+                if (spawnInterval) {
+                    clearInterval(spawnInterval);
+                    spawnInterval = null;
+                }
+                if (animationId) {
+                    cancelAnimationFrame(animationId);
+                    animationId = null;
+                }
+                hearts.forEach(h => h.el.remove());
+                hearts = [];
+                container.classList.add('hidden');
+                startScreen.classList.remove('hidden');
+                alert('You caught 10 hearts! 💖');
+            }
+
             function startGame() {
                 startScreen.classList.add('hidden');
                 container.classList.remove('hidden');
@@ -304,6 +321,10 @@
                             scoreEl.textContent = score;
                             h.el.remove();
                             hearts.splice(i, 1);
+                            if (score >= 10) {
+                                endGame();
+                                return;
+                            }
                             continue;
                         }
                     }
