@@ -172,6 +172,61 @@
             transform: scale(1.05);
         }
 
+        #win-screen {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(180deg, #1a0a2e 0%, #2d1b4e 50%, #4a1942 100%);
+            z-index: 25;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #win-screen h1 {
+            color: #fff;
+            font-size: clamp(22px, 6vw, 38px);
+            margin-bottom: 24px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        }
+
+        #win-screen .giphy-embed-wrap {
+            margin: 16px 0 24px;
+            border-radius: 12px;
+            overflow: hidden;
+            max-width: min(320px, 90vw);
+        }
+
+        #win-screen .giphy-embed-wrap iframe {
+            display: block;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16/9;
+            max-height: 200px;
+            overflow: hidden;
+            border: none;
+        }
+
+        #play-again-btn {
+            padding: 14px 32px;
+            font-size: clamp(16px, 4vw, 20px);
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(180deg, #ff1744 0%, #c51162 100%);
+            border: none;
+            border-radius: 999px;
+            box-shadow: 0 4px 16px rgba(255, 23, 68, 0.5);
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+
+        #play-again-btn:hover, #play-again-btn:active {
+            background: linear-gradient(180deg, #ff4569 0%, #e91e63 100%);
+            transform: scale(1.05);
+        }
+
         .hidden {
             display: none !important;
         }
@@ -180,8 +235,17 @@
 <body>
     <div id="start-screen">
         <h1>❤️ Catch the Hearts ❤️</h1>
-        <p>Move the basket to catch falling hearts. Tap and drag on mobile, or use your mouse on desktop!</p>
+        <p>Catch 10 hearts to win!</p>
         <button id="start-btn" type="button">Start Game</button>
+    </div>
+
+    <div id="win-screen" class="hidden">
+        <h1>YOU WIN!!!</h1>
+        <h1>Happy Valentines day my Love ❤️ ❤️ ❤️ I love you so much 🥰🥰🥰</h1>
+        <div class="giphy-embed-wrap">
+            <iframe src="https://giphy.com/embed/PIlp4W4Lj83Hc3ZXpP" width="280" height="158" frameBorder="0" class="giphy-embed" allowFullScreen title="Super kiss"></iframe>
+        </div>
+        <button id="play-again-btn" type="button">Play again</button>
     </div>
 
     <div id="game-container" class="hidden">
@@ -199,7 +263,9 @@
         (function () {
             const container = document.getElementById('game-container');
             const startScreen = document.getElementById('start-screen');
+            const winScreen = document.getElementById('win-screen');
             const startBtn = document.getElementById('start-btn');
+            const playAgainBtn = document.getElementById('play-again-btn');
             const basket = document.getElementById('basket');
             const scoreEl = document.getElementById('score');
 
@@ -233,8 +299,7 @@
                 hearts.forEach(h => h.el.remove());
                 hearts = [];
                 container.classList.add('hidden');
-                startScreen.classList.remove('hidden');
-                alert('You caught 10 hearts! 💖');
+                winScreen.classList.remove('hidden');
             }
 
             function startGame() {
@@ -353,6 +418,11 @@
 
             startBtn.addEventListener('click', function () {
                 startGame();
+            });
+
+            playAgainBtn.addEventListener('click', function () {
+                winScreen.classList.add('hidden');
+                startScreen.classList.remove('hidden');
             });
 
             container.addEventListener('touchmove', onPointerMove, { passive: false });
