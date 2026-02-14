@@ -397,15 +397,15 @@
     <div id="verify-screen">
         <div id="verify-box">
             <div id="verify-header">
-                <div class="icon">🔒</div>
-                <h2>Human verification</h2>
+                <div class="icon"><img src="verify-images/Recapcha.png" alt="Valentines Day Verification" width="50" height="50"></div>
+                <h2> Valentines Day Verification </h2>
             </div>
             <div id="verify-robot-row">
                 <div id="verify-checkbox"></div>
-                <span id="verify-robot-label">Are you a robot? — I'm not a robot</span>
+                <span id="verify-robot-label">Are you my valentines? — I'm not a robot</span>
             </div>
             <div id="verify-challenge">
-                <p>Select all the hearts to continue:</p>
+                <p>Select all or our pictures together to continue:</p>
                 <div id="verify-image-grid"></div>
                 <button type="button" id="verify-btn" disabled>Verify</button>
             </div>
@@ -413,14 +413,14 @@
     </div>
 
     <div id="start-screen" class="hidden">
-        <h1>❤️ Catch the Hearts ❤️</h1>
-        <p>Catch 10 hearts to win!</p>
+        <h1>❤️ Catch the Hearts Game ❤️</h1>
+        <p>Catch 15 hearts to win!</p>
         <button id="start-btn" type="button">Start Game</button>
     </div>
 
     <div id="win-screen" class="hidden">
-        <h1>YOU WIN!!!</h1>
-        <h1>WOW UR SO GOOD </h1>
+        <h1>I KNEW YOU WOULD WIN!!!</h1>
+    <h1>YOU ARE ALWAYS MY WINNDER</h1>
         <h1>Happy Valentines day my Love ❤️ ❤️ ❤️ I love you so much 🥰🥰🥰</h1>
         <div class="giphy-embed-wrap">
             <iframe src="https://giphy.com/embed/PIlp4W4Lj83Hc3ZXpP" width="280" height="158" frameBorder="0" class="giphy-embed" allowFullScreen title="Super kiss"></iframe>
@@ -667,7 +667,7 @@
                             scoreEl.textContent = score;
                             h.el.remove();
                             hearts.splice(i, 1);
-                            if (score >= 10) {
+                            if (score >= 15) {
                                 endGame();
                                 return;
                             }
